@@ -96,14 +96,18 @@ Note: when coercing from `ℕ` to e.g. `ℚ` these tactics will not push/pull ca
 since `↑n - ↑m = ↑(n - m)` and `↑n / ↑m = ↑(n / m)` are not always true.
 -/
 
-example (n : ℕ) : ((n + 1 : ℤ) : ℚ) = n + 1 := by norm_cast
+example (n : ℕ) : ((n + 1 : ℤ) : ℚ) = (n + 1 : ℚ) := by norm_cast
 
 example (n m : ℕ) (h : (n : ℚ) + 1 ≤ m) : (n : ℝ) + 1 ≤ m := by {
-  sorry
+  norm_cast
+  norm_cast at h
   }
 
 example (n m : ℕ) (h : n = m * m + 2) : (n : ℝ) - 3 = (m + 1) * (m - 1) := by {
-  sorry
+  -- norm_cast at h  --does nothing
+  rw [h]
+  push_cast
+  ring
   }
 
 
@@ -135,7 +139,13 @@ example : fac 4 = 24 := rfl
 #eval fac 100
 
 theorem fac_pos (n : ℕ) : 0 < fac n := by {
-  sorry
+  induction n with
+  | zero =>
+    unfold fac
+    norm_num
+  | succ n ih =>
+    rw [fac]
+    positivity
   }
 
 open BigOperators Finset
@@ -149,7 +159,7 @@ example (f : ℕ → ℝ) (n : ℕ) : ∑ i in range (n + 1), f i = (∑ i in ra
   sum_range_succ f n
 
 /- Here `range n` or `Finset.range n` is the set `{0, ..., n - 1}`.
-It's type is `Finset ℕ`, which is a set
+It's type is `Finset ℕ`, which is a set together with the property that it's finite.
 -/
 #check Finset.range
 
@@ -160,7 +170,12 @@ This makes it harder to prove things about it, so we generally avoid using it
 
 
 example (n : ℕ) : ∑ i in range (n + 1), (i : ℚ) = n * (n + 1) / 2 := by {
-  sorry
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    field_simp
+    ring
   }
 
 /- Some other useful induction principles -/
@@ -171,10 +186,12 @@ example (n : ℕ) : ∑ i in range (n + 1), (i : ℚ) = n * (n + 1) / 2 := by {
 /- We can use other induction principles with `induction ... using ... with` -/
 
 theorem fac_dvd_fac (n m : ℕ) (h : n ≤ m) : fac n ∣ fac m := by {
-  sorry
+  induction m, h using Nat.le_induction with
+  | base => rfl
+  | succ k hk ih =>
+    rw [fac]
+    exact Dvd.dvd.mul_left ih (k + 1)
   }
-
-
 
 
 /-
@@ -319,7 +336,8 @@ instance : Add Point := ⟨add⟩
 @[simp] lemma add_z (a b : Point) : (a + b).z = a.z + b.z := by rfl
 
 example (a b : Point) : a + b = b + a := by {
-  sorry
+  ext
+  all_goals simp [add_comm]
   }
 
 end Point
@@ -364,6 +382,10 @@ def PointPoint'.add (a b : PosPoint') : PosPoint' :=
 
 /- We could also define a type like this using a subtype. It's notation is very similar to sets,
 but written as `{x : α // p x}` instead of `{x : α | p x}`. -/
+
+structure PosReal' where
+  toReal : ℝ
+  toReal_pos : toReal > 0
 
 def PosReal : Type :=
   { x : ℝ // x > 0 }

@@ -32,6 +32,10 @@ abbrev PosReal : Type := {x : ℝ // x > 0}
 /- Codomain is a subtype (usually not recommended). -/
 example (f : ℝ → PosReal) (hf : Monotone f) :
     Monotone (fun x ↦ log (f x)) := by {
+  unfold Monotone
+  intro a b hab
+  simp
+  have h1 : ((f a) : ℝ) ≤ ((f b) : ℝ) := by exact hf hab
   sorry
   }
 
@@ -105,7 +109,11 @@ instance : MulAction G (Subgroup G) := sorry
 Let's define the smallest equivalence relation on a type `X`. -/
 def myEquivalenceRelation (X : Type*) : Setoid X where
   r x y := x = y
-  iseqv := sorry -- Here you have to show that this is an equivalence.
+  iseqv := {
+    refl := by intro x; rfl
+    symm := by intro x y hxy; exact id (Eq.symm hxy)
+    trans := by intro x y z hx hy; rw [hx]; exact hy
+  } -- Here you have to show that this is an equivalence.
                  -- If you click on the `sorry`, a lightbulb will appear to give the fields
 
 /- This simp-lemma will simplify `x ≈ y` to `x = y` in the lemma below. -/

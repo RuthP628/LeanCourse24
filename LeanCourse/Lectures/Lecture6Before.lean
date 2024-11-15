@@ -51,7 +51,7 @@ universe u v
 #check Type (v + 3)
 #check Type (max u v)
 #check fun (α : Type u) (β : Type v) ↦ α → β
--- #check Type (u + v) -- the operations on universes are very limited.
+ -- #check Type (u + v) -- the operations on universes are very limited.
 
 /-
 * `Type*` means `Type u` for a *variable* `u`
@@ -80,6 +80,8 @@ example : Type (u + 3) = Type _ := by rfl
 #check Sort (u + 1)
 #check Sort*
 
+def myId (X : Type*) : X → X := fun x ↦ x
+#check myId ℝ
 
 /- ## A note on coercions
 
@@ -97,6 +99,7 @@ abbrev PosReal : Type := {x : ℝ // x > 0}
 instance : Coe PosReal Real := ⟨fun x ↦ x.1⟩
 
 def diff (x y : PosReal) : ℝ := x - y
+#print diff
 
 /- coercions can be composed. -/
 #check fun (x : PosReal) ↦ (x : ℂ)
@@ -115,7 +118,7 @@ structure PointedType where
 instance : CoeSort PointedType Type* := ⟨fun α ↦ α.carrier⟩
 
 structure PointedFunction (X Y : PointedType) where
-  toFun : X → Y
+  toFun : X.carrier → Y.carrier
   toFun_pt : toFun X.pt = Y.pt
 
 infix:50 " →. " => PointedFunction
@@ -154,6 +157,9 @@ variable (s : Set ℝ)
 #check (s : Type)
 
 example (s : Set ℝ) (x : s) : (x : ℝ) ∈ s := x.2
+example (s : Set ℝ) (x : s) : x.1 ∈ s := x.2
+example (s : Set ℝ) (x : ℝ) (hx : x ∈ s) : x ∈ s := hx
+example (s : Set ℝ) (x y : s) : (x : ℝ) + y = y + x := sorry
 end
 
 /- However, subtypes are often not that convenient to work with,
@@ -166,7 +172,13 @@ example (f : ℝ → PosReal) (hf : Monotone f) :
 
 /- Specify that the range is a subset of a given set (recommended). -/
 example (f : ℝ → ℝ) (hf : range f ⊆ {x | x > 0}) (h2f : Monotone f) :
-  Monotone (log ∘ f) := sorry
+  Monotone (log ∘ f) := by {
+    unfold Monotone
+    intro a b hab
+    simp
+    apply h2f at hab
+    sorry
+  }
 
 /- Domain is a subtype (not recommended). -/
 example (f : PosReal → ℝ) (hf : Monotone f) :
@@ -175,7 +187,7 @@ example (f : PosReal → ℝ) (hf : Monotone f) :
 /- Only specify that a function is well-behaved
 on a subset of its domain (recommended). -/
 example (f : ℝ → ℝ) (hf : MonotoneOn f {x | x > 0}) :
-    Monotone (fun x ↦ f (exp x)) := sorry
+    Monotone (fun x ↦ f (exp x)) := by sorry
 
 
 

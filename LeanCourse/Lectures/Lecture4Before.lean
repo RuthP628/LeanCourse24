@@ -52,7 +52,7 @@ example : (univ : Set α) = {x | True} := by rfl
 example (s : Set α) : powerset s = {t | t ⊆ s} := by rfl -- \powerset
 
 -- What is the type of `powerset s`?
--- #check powerset s
+#check powerset s
 
 
 /- We can take unions and intersections of families of sets in three different ways:
@@ -92,7 +92,9 @@ example (𝓒 : Set (Set α)) :
 
 example (C : ι → Set α) (s : Set α) :
     s ∩ (⋃ i, C i) = ⋃ i, (C i ∩ s) := by {
-  sorry
+  ext x
+  simp
+  rw [and_comm]
   }
 
 /- We can take images and preimages of sets.
@@ -112,7 +114,16 @@ example (f : α → β) (s : Set α) : f '' s = { y : β | ∃ x ∈ s, f x = y 
 
 
 example {s : Set α} {t : Set β} {f : α → β} : f '' s ⊆ t ↔ s ⊆ f ⁻¹' t := by {
-  sorry
+  constructor
+  · intro h x hx
+    simp
+    apply h
+    exact mem_image_of_mem f hx
+  · intro h y hy
+    obtain ⟨ x, x_in_s, fx_eq_y ⟩ := hy
+    subst y
+    specialize h x_in_s
+    exact h
   }
 
 
@@ -125,7 +136,10 @@ example (s t : Set ℝ) :
 example (s t : Set ℝ) : -s = {x : ℝ | -x ∈ s } := by rfl
 
 example : ({1, 3, 5} : Set ℝ) + {0, 10} = {1, 3, 5, 11, 13, 15} := by {
-  sorry
+  ext x
+  simp [@mem_add]
+  norm_num
+  tauto
   }
 
 
@@ -165,36 +179,54 @@ open Classical
 
 def conditionalInverse (y : β)
   (h : ∃ x : α, f x = y) : α :=
-  sorry
+  Classical.choose h
 
 lemma invFun_spec (y : β) (h : ∃ x, f x = y) :
     f (conditionalInverse f y h) = y :=
-  sorry
+  Classical.choose_spec h
 
 /- We can now define the function by cases
 on whether it lies in the range of `f` or not. -/
 
 variable [Inhabited α]
 def inverse (f : α → β) (y : β) : α :=
-  sorry
+  if h : ∃ x : α, f x = y then
+    conditionalInverse f y h else default
 
 /- We can now prove that `inverse f` is a right-inverse if `f` is surjective
 and a left-inverse if `f` is injective.
 We use the `ext` tactic to show that two functions are equal. -/
 lemma rightInv_of_surjective (hf : Surjective f) :
     f ∘ inverse f = id := by {
-  sorry
+  ext y
+  simp
+  unfold Surjective at hf
+  obtain ⟨ x, hx ⟩ := hf y
+  subst y
+  simp [inverse]
+  apply invFun_spec
   }
 
-lemma leftInv_of_surjective (hf : Injective f) :
+lemma leftInv_of_injective (hf : Injective f) :
     inverse f ∘ f = id := by {
-  sorry
+  ext x
+  simp
+  apply hf
+  simp [inverse, invFun_spec]
   }
 
 /- We can package this together in one statement. -/
 lemma inv_of_bijective (hf : Bijective f) :
     ∃ g : β → α, f ∘ g = id ∧ g ∘ f = id := by {
-  sorry
+  let g : β → α := inverse f
+  use g
+  simp [g]
+  constructor
+  · apply rightInv_of_surjective
+    exact Bijective.surjective hf
+  · apply leftInv_of_injective
+    exact Bijective.injective hf
+
   }
 
 end Inverse
