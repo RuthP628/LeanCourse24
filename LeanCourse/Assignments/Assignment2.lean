@@ -132,7 +132,10 @@ end PartialOrder
 
 /- Prove this using a calculation. -/
 lemma exercise_calc_real {t : ℝ} (ht : t ≥ 10) : t ^ 2 - 3 * t - 17 ≥ 5 := by {
-  sorry
+  calc
+  t^2 - 3 * t - 17 = t * t - 3 * t - 17 := by rw [pow_two]
+  _= (t-3)* t - 17 := by ring
+  _≥ (10-3) * 10 - 17 := by sorry
   }
 
 /- Prove this using a calculation.
