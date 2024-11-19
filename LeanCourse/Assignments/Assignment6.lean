@@ -22,7 +22,7 @@ open Classical
 
 
 /-! # Exercises to practice. -/
-/-
+
 
 /- Prove the following exercises about functions where the domain/codomain are
 subtypes. -/
@@ -198,7 +198,7 @@ instance : MulAction G (Subgroup G) where
   one_smul := by exact conjugate_one
   mul_smul := by exact conjugate_mul
 
--/
+
 
 /-! # Exercises to hand-in. -/
 
@@ -339,7 +339,7 @@ def orbit_stabilizer_theorem (x : X) : G ⧸ stabilizerOf G x ≃ orbitOf G x :=
     refine eq_inv_smul_iff.mp ?_
     exact mul_smul g₁⁻¹ g₂ x
   }
-  let OrbitStabilizerBijection : G ⧸ stabilizerOf G x → orbitOf G x := sorry
+  let OrbitStabilizerBijection : G ⧸ stabilizerOf G x → orbitOf G x := (Quotient.lift fun g ↦ ⟨g • x, sorry⟩) (sorry)
   have h2: Bijective OrbitStabilizerBijection := by sorry
   exact Equiv.ofBijective OrbitStabilizerBijection h2
   }
