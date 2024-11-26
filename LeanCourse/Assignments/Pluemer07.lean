@@ -22,7 +22,7 @@ attribute [-ext] LinearMap.prod_ext
   Use `sorry` if you get stuck on an exercise.
 -/
 
-
+/-
 /-! # Exercises to practice.
 Feel free to skip these exercises-/
 
@@ -217,18 +217,8 @@ example (x y : {x : R // IsAUnit x}) : (↑(x * y) : R) = ↑x * ↑y := by sorr
 
 end Ring
 
-/- Let's prove that if `M →ₗ[R] M` forms a module over `R`, then `R` must be a commutative ring.
-To prove this we have to additionally assume that `M` contains at least two elements, and
-`smul_eq_zero : r • x = 0 ↔ r = 0 ∨ x = 0` (this is given by the `NoZeroSMulDivisors` class).-/
-#check exists_ne
-lemma commutative_of_module {R M M' : Type*} [Ring R] [AddCommGroup M] [Module R M] [Nontrivial M]
-    [NoZeroSMulDivisors R M] [Module R (M →ₗ[R] M)]
-    (h : ∀ (r : R) (f : M →ₗ[R] M) (x : M), (r • f) x = r • f x)
-    (r s : R) : r * s = s * r := by {
-  sorry
-  }
 
-
+-/
 /-! # Exercises to hand-in. -/
 
 /- The Frobenius morphism in a domain of characteristic `p` is the map `x ↦ x ^ p`.
