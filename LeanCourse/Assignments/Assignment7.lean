@@ -27,29 +27,51 @@ attribute [-ext] LinearMap.prod_ext
 Feel free to skip these exercises-/
 
 example (n m : ℤ) : span {n} ⊔ span {m} = span {gcd n m} := by {
-  sorry
+  rw [← Ideal.span_union]
+  simp
+  rw [@span_gcd]
+  rw [@span_pair_comm]
   }
 
 example (n m : ℤ) : span {n} ⊓ span {m} = span {lcm n m} := by {
-  sorry
+  ext x
+  constructor
+  · intro hx
+    rw [@mem_inf] at hx
+    obtain ⟨ hx₁, hx₂⟩ := hx
+    rw [@mem_span_singleton]
+    rw [@lcm_dvd_iff]
+    rw [@mem_span_singleton] at hx₁
+    rw [@mem_span_singleton] at hx₂
+    exact ⟨hx₁, hx₂⟩
+  · intro hx
+    rw [@mem_span_singleton] at hx
+    rw [@lcm_dvd_iff] at hx
+    rw [@mem_inf]
+    repeat rw[@mem_span_singleton]
+    exact hx
   }
 
 /- Show that transposing a matrix gives rise to a linear equivalence. -/
 example {R M m n : Type*} [Ring R] [AddCommGroup M] [Module R M] :
   Matrix m n M ≃ₗ[R] Matrix n m M where
     toFun := fun M ↦ Mᵀ
-    map_add' := by sorry
-    map_smul' := by sorry
-    invFun := by sorry
-    left_inv := by sorry
-    right_inv := by sorry
+    map_add' := by exact fun x y ↦ rfl
+    map_smul' := by exact fun m_1 x ↦ rfl
+    invFun := fun M ↦ Mᵀ
+    left_inv := by exact congrFun rfl
+    right_inv := by exact congrFun rfl
 
 /- A ring has characteristic `p` if `1 + ⋯ + 1 = 0`, where we add `1` `p` times to itself.
 This is written `CharP` in Lean.
 In a module over a ring with characteristic 2, for every element `m` we have `m + m = 0`. -/
 example {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] [CharP R 2] (m : M) :
     m + m = 0 := by {
-  sorry
+      calc
+      m + m = (1 : R) • m + (1 : R) • m := by rw [one_smul]
+      _ = ((1 : R) + (1 : R)) • m := by rw [@add_smul]
+      _= (0 : R) • m := by rw [@CharTwo.add_self_eq_zero]
+      _= 0 := by exact zero_smul R m
   }
 
 section Frobenius
@@ -61,13 +83,35 @@ This allows type-class inference to see that this is true.
 You can access the fact that `p` is prime using `hp.out`. -/
 
 def frobeniusMorphism (p : ℕ) [hp : Fact p.Prime] (R : Type*) [CommRing R] [CharP R p] :
-  R →+* R := sorry
+  R →+* R where
+    toFun := fun x ↦ x ^ p
+    map_one' := by simp
+    map_mul' := by exact fun x y ↦ mul_pow x y p
+    map_zero' := by {
+      simp
+      by_cases hp' : p = 0
+      · have hp'' : Nat.Prime p := by exact hp.out
+        rw [hp'] at hp''
+        contradiction
+      · exact zero_pow hp'
+    }
+    map_add' := by {
+      simp
+      exact fun x y ↦ add_pow_char R x y
+    }
 
-@[simp] lemma frobeniusMorphism_def (x : R) : frobeniusMorphism p R x = x ^ p := sorry
+@[simp] lemma frobeniusMorphism_def (x : R) : frobeniusMorphism p R x = x ^ p := by rfl
 
 /- Prove the following equality for iterating the frobenius morphism. -/
 lemma iterate_frobeniusMorphism (n : ℕ) (x : R) : (frobeniusMorphism p R)^[n] x = x ^ p ^ n := by {
-  sorry
+  induction n with
+  | zero => simp
+  | succ n ih => {
+    rw [pow_add]
+    simp
+    rw [pow_mul]
+    rw [← ih]
+  }
   }
 
 /- Show that the Frobenius morphism is injective on a domain. -/
