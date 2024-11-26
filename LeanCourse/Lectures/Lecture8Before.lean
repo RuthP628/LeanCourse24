@@ -413,7 +413,9 @@ If you know category theory, this is an *adjunction* between orders
 -/
 @[simps]
 def cl (U : RegularOpens X) : Closeds X :=
-  ⟨closure U, sorry⟩
+  ⟨closure U, {
+    isOpen_compl := by sorry
+  }⟩
 
 /- The interior of a closed set. You will have to prove yourself that it is regular open. -/
 @[simps]
