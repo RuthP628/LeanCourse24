@@ -117,6 +117,7 @@ example {X Y : Type*} (f : X → Y) (F : Filter X) (V : Set Y) :
 example {X Y : Type*} (f : X → Y) : Filter Y → Filter X :=
   Filter.comap f
 
+
 /- These form a *Galois connection* / adjunction -/
 example {X Y : Type*} (f : X → Y) (F : Filter X) (G : Filter Y) :
     Filter.map f F ≤ G ↔ F ≤ Filter.comap f G := by
@@ -414,13 +415,18 @@ If you know category theory, this is an *adjunction* between orders
 @[simps]
 def cl (U : RegularOpens X) : Closeds X :=
   ⟨closure U, {
-    isOpen_compl := by sorry
+    isOpen_compl := by simp
   }⟩
 
 /- The interior of a closed set. You will have to prove yourself that it is regular open. -/
 @[simps]
 def _root_.TopologicalSpace.Closeds.int (C : Closeds X) : RegularOpens X :=
-  ⟨interior C, sorry, sorry⟩
+  ⟨interior C, by simp, by {
+    have h : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) = closure C := by sorry
+    rw [h]
+    have h' : closure (@SetLike.coe (Closeds X) X Closeds.instSetLike C) = C := by sorry
+    rw [h']
+  }⟩
 
 /- Now let's show the relation between these two operations. -/
 lemma cl_le_iff {U : RegularOpens X} {C : Closeds X} :
