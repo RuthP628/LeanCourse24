@@ -33,7 +33,9 @@ example {ι : Type*} {L : Filter ι} {f g : ι → ℝ} (h1 : ∀ᶠ i in L, f i
 
 example {ι : Type*} {L : Filter ι} {a b : ι → ℤ} (h1 : ∀ᶠ i in L, a i ≤ b i + 1)
     (h2 : ∀ᶠ i in L, b i ≤ a i + 1) (h3 : ∀ᶠ i in L, b i ≠ a i) : ∀ᶠ i in L, |a i - b i| = 1 := by {
-  sorry
+  filter_upwards [h1, h2, h3] with i h1' h2' h3'
+  rw [propext (abs_eq (Int.NonNeg.mk (1 + 0)))]
+  omega
   }
 
 /- The goal of the following exercise is to prove that
@@ -86,12 +88,25 @@ If you know category theory, this is an *adjunction* between orders
 -/
 @[simps]
 def cl (U : RegularOpens X) : Closeds X :=
-  ⟨closure U, sorry⟩
+  ⟨closure U, {
+    isOpen_compl := by simp
+  }⟩
 
 /- The interior of a closed set. You will have to prove yourself that it is regular open. -/
 @[simps]
 def _root_.TopologicalSpace.Closeds.int (C : Closeds X) : RegularOpens X :=
-  ⟨interior C, sorry, sorry⟩
+  ⟨interior C, by simp, by {
+    have h : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) = C := by {
+      have h' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊆ C := by {
+        sorry
+      }
+      have h'' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊇ C := by {
+        sorry
+      }
+      exact Eq.symm (Subset.antisymm h'' h')
+    }
+    exact congrArg interior h
+  }⟩
 
 /- Now let's show the relation between these two operations. -/
 lemma cl_le_iff {U : RegularOpens X} {C : Closeds X} :
