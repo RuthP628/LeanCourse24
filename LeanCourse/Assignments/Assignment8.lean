@@ -98,6 +98,8 @@ def _root_.TopologicalSpace.Closeds.int (C : Closeds X) : RegularOpens X :=
   ⟨interior C, by simp, by {
     have h : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) = C := by {
       have h' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊆ C := by {
+        have h₁ : interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C) ⊆ C := by exact interior_subset
+        have h₂: IsClosed (@SetLike.coe (Closeds X) X Closeds.instSetLike C) := by exact Closeds.closed C
         sorry
       }
       have h'' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊇ C := by {
@@ -187,7 +189,11 @@ abbrev CompleteBooleanAlgebra.ofMinimalAxioms {α : Type*}
 
 
 instance : HasCompl (RegularOpens X) where
-  compl U := sorry
+  compl U := {
+    carrier := sorry
+    isOpen := sorry
+    regular' := sorry
+  }
 
 @[simp]
 lemma coe_compl (U : RegularOpens X) : ↑Uᶜ = interior (U : Set X)ᶜ := sorry
