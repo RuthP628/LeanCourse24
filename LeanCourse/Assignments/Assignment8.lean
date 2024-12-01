@@ -98,9 +98,8 @@ def _root_.TopologicalSpace.Closeds.int (C : Closeds X) : RegularOpens X :=
   ⟨interior C, by simp, by {
     have h : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) = C := by {
       have h' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊆ C := by {
-        have h₁ : interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C) ⊆ C := by exact interior_subset
         have h₂: IsClosed (@SetLike.coe (Closeds X) X Closeds.instSetLike C) := by exact Closeds.closed C
-        sorry
+        exact IsClosed.closure_interior_subset h₂
       }
       have h'' : closure (interior (@SetLike.coe (Closeds X) X Closeds.instSetLike C)) ⊇ C := by {
         sorry
@@ -215,14 +214,22 @@ a filter of the form `if q then F else G`. The next exercise is a more concrete 
 Useful lemmas here are
 * `Filter.Eventually.filter_mono`
 * `Filter.Eventually.mono` -/
+
+#check Filter.Eventually.filter_mono
+#check Filter.Eventually.mono
+
 lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a b : α}
     {L : Filter ι} {F G : Filter α}
     (hbF : ∀ᶠ x in F, x ≠ b) (haG : ∀ᶠ x in G, x ≠ a) (haF : pure a ≤ F) (hbG : pure b ≤ G) :
     (∀ᶠ i in L, p i ↔ q) ↔
     Tendsto (fun i ↦ if p i then a else b) L (if q then F else G) := by {
   have hab : a ≠ b
-  · sorry
+  · exact haF hbF
   rw [tendsto_iff_eventually]
+  constructor
+  · intro h
+    intro p_1 hp_1
+    sorry
   sorry
   }
 
