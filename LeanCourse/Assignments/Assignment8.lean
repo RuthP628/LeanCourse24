@@ -229,8 +229,16 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
   constructor
   · intro h
     intro p_1 hp_1
-    sorry
-  sorry
+    by_cases h' : q
+    · have h₁ : (if q then F else G) = F := by exact if_pos h'
+      rw [h₁] at hp_1
+      filter_upwards [h] with i h
+      apply h.2 at h'
+      have h₂ : (if p i then a else b) = a := by exact if_pos h'
+      rw [h₂]
+      sorry
+    · sorry
+  · sorry
   }
 
 /- To be more concrete, we can use the previous lemma to prove the following.
