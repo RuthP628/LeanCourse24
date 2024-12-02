@@ -237,8 +237,15 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
       have h₂ : (if p i then a else b) = a := by exact if_pos h'
       rw [h₂]
       exact haF hp_1
-    · sorry
-  · sorry
+    · have h₁ : (if q then F else G) = G := by exact if_neg h'
+      rw [h₁] at hp_1
+      filter_upwards [h] with i h
+      have h₂ : ¬ p i := by exact (iff_false_right h').mp h
+      have h₃ : (if p i then a else b) = b := by exact if_neg h₂
+      rw [h₃]
+      exact hbG hp_1
+  · intro h
+    sorry
   }
 
 /- To be more concrete, we can use the previous lemma to prove the following.
