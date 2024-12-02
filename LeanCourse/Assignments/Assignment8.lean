@@ -248,6 +248,7 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
     by_cases h₁ : q
     · have h' : (if q then F else G) = F := by exact if_pos h₁
       rw [h'] at h
+      specialize h hbF
       sorry
     · sorry
   }
