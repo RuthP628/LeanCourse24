@@ -236,7 +236,7 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
       apply h.2 at h'
       have h₂ : (if p i then a else b) = a := by exact if_pos h'
       rw [h₂]
-      sorry
+      exact haF hp_1
     · sorry
   · sorry
   }
