@@ -245,7 +245,11 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
       rw [h₃]
       exact hbG hp_1
   · intro h
-    sorry
+    by_cases h₁ : q
+    · have h' : (if q then F else G) = F := by exact if_pos h₁
+      rw [h'] at h
+      sorry
+    · sorry
   }
 
 /- To be more concrete, we can use the previous lemma to prove the following.
