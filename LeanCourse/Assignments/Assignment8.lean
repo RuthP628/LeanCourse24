@@ -21,7 +21,7 @@ open BigOperators Function Set Real Filter Classical Topology TopologicalSpace
   Use `sorry` if you get stuck on an exercise.
 -/
 
-
+/-
 /-! # Exercises to practice. -/
 
 /- You can use `filter_upwards` to conveniently conclude `Eventually` statements from `Eventually`
@@ -206,7 +206,7 @@ instance completeBooleanAlgebra : CompleteBooleanAlgebra (RegularOpens X) :=
     top_le_sup_compl := by
       sorry
   }
-
+-/
 /-! # Exercises to hand-in. -/
 
 /- Here is a technical property using filters, characterizing when a 2-valued function converges to
@@ -338,3 +338,9 @@ lemma tendsto_indicator_iff {ι : Type*} {L : Filter ι} {s : ι → Set ℝ} {t
     intro x
     sorry
   }
+  /-i didn't manage to actually apply the previous lemma because I couldn't
+  figure out how to get rid of the quantification over x
+  (I am aware that the p i from the previous lemma should probably be something as x ∈ s i,
+  q should be something like x ∈ t, a and b should be f and the constant 0 function, respectively,
+  and F and G should be something like the neighborhood filter of f and the neighbourhood filter of const 0,
+  but the quantification still didn't make sense to me)-/
