@@ -298,7 +298,7 @@ lemma tendsto_indicator_iff {ι : Type*} {L : Filter ι} {s : ι → Set ℝ} {t
   · intro h
     rw [tendsto_iff_eventually]
     intro p_1 hp_1
-
+    have h' : ∀ (x : ℝ), @Filter.Eventually ι (fun i ↦ (s i).indicator f x = f x ↔ t.indicator f x = f x) L := by sorry
     sorry
   · sorry
   }
