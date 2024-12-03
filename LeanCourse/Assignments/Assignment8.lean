@@ -249,8 +249,34 @@ lemma technical_filter_exercise {ι α : Type*} {p : ι → Prop} {q : Prop} {a 
     · have h' : (if q then F else G) = F := by exact if_pos h₁
       rw [h'] at h
       specialize h hbF
-      sorry
-    · sorry
+      filter_upwards [h] with i
+      by_cases h'' : p i
+      · have h₁'' : (if p i then a else b) = a := by exact if_pos h''
+        rw [h₁'']
+        intro h₂
+        constructor
+        · intro h₃
+          exact h₁
+        · intro h₃
+          exact h''
+      · have h₁'' : (if p i then a else b) = b := by exact if_neg h''
+        rw [h₁'']
+        intro h₂
+        contradiction
+    · have h' : (if q then F else G) = G := by exact if_neg h₁
+      rw [h'] at h
+      specialize h haG
+      filter_upwards [h] with i
+      intro h₂
+      constructor
+      · by_cases h₃ : p i
+        · have h₄ : (if p i then a else b) = a := by exact if_pos h₃
+          rw [h₄] at h₂
+          contradiction
+        · intro h₄
+          contradiction
+      · intro h₃
+        contradiction
   }
 
 /- To be more concrete, we can use the previous lemma to prove the following.
@@ -259,9 +285,20 @@ then  `f * 1_{s i}` tends to `f * 1_t` iff `x ∈ s i` is eventually equivalent 
 `x ∈ t` for all `x`. (note that this does *not* necessarily mean that `s i = t` eventually).
 `f * 1_t` is written `indicator t f` in Lean.
 Useful lemmas for this exercise are `indicator_apply`, `apply_ite` and `tendsto_pi_nhds`. -/
+
+#check indicator_apply
+#check apply_ite
+#check tendsto_pi_nhds
+
 lemma tendsto_indicator_iff {ι : Type*} {L : Filter ι} {s : ι → Set ℝ} {t : Set ℝ} {f : ℝ → ℝ}
     (ha : ∀ x, f x ≠ 0) :
     (∀ x, ∀ᶠ i in L, x ∈ s i ↔ x ∈ t) ↔
     Tendsto (fun i ↦ indicator (s i) f) L (𝓝 (indicator t f)) := by {
-  sorry
+  constructor
+  · intro h
+    rw [tendsto_iff_eventually]
+    intro p_1 hp_1
+
+    sorry
+  · sorry
   }
