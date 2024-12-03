@@ -298,7 +298,43 @@ lemma tendsto_indicator_iff {ι : Type*} {L : Filter ι} {s : ι → Set ℝ} {t
   · intro h
     rw [tendsto_iff_eventually]
     intro p_1 hp_1
-    have h' : ∀ (x : ℝ), @Filter.Eventually ι (fun i ↦ (s i).indicator f x = f x ↔ t.indicator f x = f x) L := by sorry
+    have h' : ∀ (x : ℝ), @Filter.Eventually ι (fun i ↦ (s i).indicator f x = f x ↔ t.indicator f x = f x) L := by {
+      have h₁' : ∀ (x : ℝ), x ∈ t ↔ t.indicator f x = f x := by {
+        intro x
+        constructor
+        · intro hx
+          exact indicator_of_mem hx f
+        · intro hx
+          by_contra hx'
+          have hx'' : t.indicator f x = 0 := by exact indicator_of_not_mem hx' f
+          rw [hx''] at hx
+          specialize ha x
+          exact ha (id (Eq.symm hx))
+        }
+      have hx' : ∀ (x : ℝ), @Filter.Eventually ι (fun i ↦ x ∈ s i ↔ t.indicator f x = f x) L := by intro x; specialize h x; simp_all
+      have h₂' : ∀ (x : ℝ), ∀ (i : ι), x ∈ s i ↔ (s i).indicator f x = f x := by {
+        intro x i
+        constructor
+        · intro hx
+          exact indicator_of_mem hx f
+        · intro hx
+          by_contra hx'
+          have hx'' : (s i).indicator f x = 0 := by exact indicator_of_not_mem hx' f
+          rw [hx''] at hx
+          specialize ha x
+          exact ha (id (Eq.symm hx))
+      }
+      intro x
+      specialize h₂' x
+      specialize hx' x
+      filter_upwards [hx'] with i hx'
+      specialize h₂' i
+      exact Iff.trans (id (Iff.symm h₂')) hx'
+    }
+    have h'' : ∀ᶠ (i : ι) in L, sorry := by sorry -- i want to say that eventually, (s i).indicator f will be "in the set of points very close to t.indicator f", but I don't know how to state that formally
     sorry
-  · sorry
+  · intro h
+    rw [tendsto_iff_eventually] at h
+    intro x
+    sorry
   }
