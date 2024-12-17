@@ -46,7 +46,7 @@ example (a b : ℕ) : (a + b) + a ≤ 2 * (a + b) := by
   -- the line above states that we have a multiplication
   -- on ℝ, but forget how it is defined.
   have h (x y : ℝ) : x * y = y * x :=
-    mul_comm x y -- error
+    --mul_comm x y -- error
   sorry
 
 

@@ -23,7 +23,14 @@ noncomputable section
 /- Do I want this to be a class itself or rather an instance of the class TopologicalSpace? -/
 
 def equivalence_of_images (X Y A : Type*) (f₁ : A → X) (f₂ : A → Y) {hf₁ : Injective f₁} {hf₂ : Injective f₂} : Setoid (X ⊕ Y) where
-  r x y := sorry
+  r x y := sorry -- match x with
+  --| match y with
+  --  |
+  --  |
+  --| match y with
+  --  |
+  --  |
+  --∃ a : A, f₁ a = x ∧ f₂ a = y
   iseqv := {
     refl := sorry
     symm := sorry
