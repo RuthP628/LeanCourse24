@@ -82,7 +82,7 @@ Especially when you define something in a proof:
 - it can be useful to write some simp-lemmas
 -/
 
-
+/-- Repeated exponentiation-/
 @[simp]
 def myFun (n : ℕ) : ℕ :=
   match n with

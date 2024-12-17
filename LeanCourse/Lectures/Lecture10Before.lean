@@ -65,6 +65,7 @@ such that for any two charts the coordinate change function
 between the charts is smooth on their common domain. -/
 variable {n : ℕ}
   {M : Type*} [TopologicalSpace M] [ChartedSpace (Fin n → ℝ) M]
+  [SecondCountableTopology M] [T2Space M]
   {e e' : PartialHomeomorph M (Fin n → ℝ)}
 
 /- We want to require the following condition for smooth manifolds. -/
