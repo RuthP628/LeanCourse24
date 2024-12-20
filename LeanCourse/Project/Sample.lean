@@ -16,18 +16,25 @@ noncomputable section
 
 /- useful definitions and theorems: -/
 #check instTopologicalSpaceSum
-#check instTopologicalSpaceSubtype
 #check instTopologicalSpaceQuotient
-#check TopologicalSpace
-#check Setoid
 #check Sum.inr.injEq
 #check Sum.inl.injEq
+#check Sum.inl
+#check Sum.inr
+#check ContinuousMap
+#check quotientMap_quotient_mk'
+#check continuous_quotient_mk'
+#check isOpenMap_inl
+#check IsOpenMap
+
 
 /-- We define an equivalence relation on the disjoint union of two types X and Y
 with respect to a type A and two injective functions f₁ : A → X and f₂ : A → Y:
 The equivalence relation is the induced equivalence relation of {incl_X f₁ a ∼ incl_Y f₂ a},
 where incl_X and incl_Y are the canonical inclusion maps.  -/
-def equivalence_of_images {X Y A : Type*} {f₁ : A → X} {f₂ : A → Y}
+def equivalence_of_images {X Y A : Type*}
+[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace A]
+{f₁ : ContinuousMap A X}{f₂ : ContinuousMap A Y}
 (hf₁ : Injective f₁) (hf₂ : Injective f₂) : Setoid (X ⊕ Y) where
   r x y := (x = y) ∨ (∃ a : A, Sum.inl (f₁ a) = x ∧ Sum.inr (f₂ a) = y)
   ∨ (∃ a : A, Sum.inl (f₁ a) = y ∧ Sum.inr (f₂ a) = x)
@@ -101,22 +108,33 @@ def equivalence_of_images {X Y A : Type*} {f₁ : A → X} {f₂ : A → Y}
   }
 
 /-- We define the adjunction space (as a set) as the quotient of X ⊕ Y with respect to the equivalence relation equivalence_of_images. -/
-def AdjunctionSpace {X Y A: Type*} {f₁ : A → X} {f₂ : A → Y}
-(hf₁ : Injective f₁) (hf₂ : Injective f₂)
-[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace A] :=
+def AdjunctionSpace {X Y A: Type*} {f₂ : A → Y}
+[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace A]
+{f₁ : ContinuousMap A X} {f₂ : ContinuousMap A Y}
+(hf₁ : Injective f₁) (hf₂ : Injective f₂) :=
     Quotient (equivalence_of_images hf₁ hf₂)
 
 /-- The adjunction space of a topological space is the induced instance of TopologicalSpace on AdjunctionSpace. -/
-instance instTopologicalSpaceAdjunction {X Y A: Type*} {f₁ : A → X} {f₂ : A → Y}
-(hf₁ : Injective f₁) (hf₂ : Injective f₂)
-[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace A] :
-    TopologicalSpace (AdjunctionSpace hf₁ hf₂) := by {
+instance instTopologicalSpaceAdjunction {X Y A: Type*}
+[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace A]
+{f₁ : ContinuousMap A X} {f₂ : ContinuousMap A Y}
+(hf₁ : Injective f₁) (hf₂ : Injective f₂) :
+    TopologicalSpace (AdjunctionSpace (f₁ := f₁) (f₂ := f₂) hf₁ hf₂) := by {
       unfold AdjunctionSpace
       infer_instance
     }
 
+--lemma adjunction_symm {X Y A: Type*} {f₁ : A → X} {f₂ : A → Y}
+--(hf₁ : Injective f₁) (hf₂ : Injective f₂) :
+--  AdjunctionSpace hf₁ hf₂ = AdjunctionSpace hf₂ hf₁
+
+--def pushout_map_1 {X Y A: Type*} {f₁ : A → X} {f₂ : A → Y}
+--(hf₁ : Injective f₁) (hf₂ : Injective f₂)
+--[TopologicalSpace X][TopologicalSpace Y][TopologicalSpace A] :=
+--  fun x ↦
+
 --@[simp]
---lemma universalPropertyAdjunctionSpace {X Y Z A : Type*} {f₁ : A → X} {f₂ : A → Y}
---(g₁ : X → Z) (g₂ : Y → Z) (hf₁ : Injective f₁) (hf₂ : Injective f₂)
---[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] [TopologicalSpace A] :
+--lemma universalPropertyAdjunctionSpace {X Y Z A : Type*}
+--[TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] [TopologicalSpace A]
+-- {f₁ : ContinuousMap A X} {f₂ : ContinuousMap A Y} (hf₁ : Injective f₁) () :
 --∃! h : AdjunctionSpace hf₁ hf₂ → Z,
