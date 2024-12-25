@@ -29,6 +29,8 @@ noncomputable section
 #check Quotient.mk'
 #check Quotient
 #check Setoid
+#check Quotient.lift
+#check continuous_quot_lift
 
 
 /-- We define an equivalence relation on the disjoint union of two types X and Y
@@ -270,7 +272,32 @@ lemma univ_prop_quotSpace {X Y : Type*} {s : Setoid X}
 [TopologicalSpace X] [TopologicalSpace Y]
 {f : ContinuousMap X Y}(hf₁ : ∀ x₁ x₂, (s.r x₁ x₂) → f x₁ = f x₂) :
 ∃! g : ContinuousMap (Quotient s) Y, f = g ∘ Quotient.mk' := by {
-  sorry
+  let g : ContinuousMap (Quotient s) Y := {
+    toFun := (Quotient.lift f) hf₁
+    continuous_toFun := by {
+      have h₁ : Continuous f → Continuous (Quot.lift f hf₁) := by exact fun a ↦ continuous_quot_lift hf₁ a
+      have h₂ : Continuous f := by exact ContinuousMap.continuous f
+      apply h₁ at h₂
+      exact h₂
+    }
+  }
+  use g
+  constructor
+  · simp
+    rfl
+  · intro g' hg'
+    ext x
+    have hx : ∃ x' : X, x = Quotient.mk' x' := by {
+      refine Quotient.exists.mp ?_
+      use x
+    }
+    obtain ⟨ x', hx' ⟩ := hx
+    rw [hx']
+    calc
+    g' (Quotient.mk' x') = (g' ∘ Quotient.mk') x' := by rfl
+    _= f x' := by exact congrFun (id (Eq.symm hg')) x'
+    _= (g ∘ Quotient.mk') x' := by rfl
+    _= g (Quotient.mk' x') := by rfl
 }
 
 /-- The adjunction space is a pushout in the category of topological spaces. -/
