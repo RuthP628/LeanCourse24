@@ -594,9 +594,53 @@ Inducing (pushout_map_left f₁ hf₂) := by {
       rw [h₂] at h₄
       unfold Filter.comap at h₄
       simp at h₄
-      obtain ⟨ V', hV'₁, hV'₂ ⟩ := h₄
+      obtain ⟨ U', hU'₁, hU'₂ ⟩ := h₄
+      rw [mem_nhds_iff] at hU'₁
+      obtain ⟨V', hV'₁, hV'₂, hV'₃⟩ := hU'₁
+      have h₄ : IsOpen (image (@Sum.inl X Y) V ∪ image (@Sum.inr X Y) V') := by {
+        have h₅ : OpenEmbedding (@Sum.inl X Y) := by exact openEmbedding_inl
+        have h₆ : OpenEmbedding (@Sum.inr X Y) := by exact openEmbedding_inr
+        have h₇ : IsOpen (image (@Sum.inl X Y) V) := by exact (OpenEmbedding.open_iff_image_open h₅).mp hV₂
+        have h₈ : IsOpen (image (@Sum.inr X Y) V') := by exact (OpenEmbedding.open_iff_image_open h₆).mp hV'₂
+        exact IsOpen.union h₇ h₈
+      }
+      let V'' := image (Quotient.mk' (s := equivalence_of_images f₁ (by apply (embedding_iff f₂).1 at hf₂; exact hf₂.2))) (image (@Sum.inl X Y) V ∪ image (@Sum.inr X Y) V')
+      use V''
+      constructor
+      · rw [mem_nhds_iff]
+        use V''
+        constructor
+        · exact fun ⦃a⦄ a ↦ a
+        · constructor
+          · let quotmap := Quotient.mk' (s := equivalence_of_images f₁ (by apply (embedding_iff f₂).1 at hf₂; exact hf₂.2))
+            have h₅ : QuotientMap quotmap := by unfold quotmap; exact quotientMap_quotient_mk'
+            apply QuotientMap.isOpen_preimage at h₅
+            apply h₅.1
+            have h₆ : preimage quotmap V'' = (image (@Sum.inl X Y) V ∪ image (@Sum.inr X Y) V') := by {
+              unfold quotmap; unfold V''
+              ext x'
+              constructor
+              · simp; intro hx'
+                obtain h₁ | h₂ := hx'
+                · obtain ⟨ v, h₃, h₄ ⟩ := h₁
+                  obtain h₅ | h₆ := h₄
+                  · left
+                    use v
+                  · obtain ⟨ a, ha₁, ha₂ ⟩ := h₆
+                    right
+                    use f₂ a
 
-      sorry
+                    sorry
+                · sorry
+              · sorry
+            }
+            rw [h₆]
+            exact h₄
+          · unfold V''
+            have h₅ : (@Sum.inl X Y) x ∈ image (@Sum.inl X Y) V := by exact mem_image_of_mem Sum.inl hV₃
+            have h₆ : (@Sum.inl X Y) x ∈ (image (@Sum.inl X Y) V ∪ image (@Sum.inr X Y) V') := by exact mem_union_left (Sum.inr '' V') h₅
+            exact mem_image_of_mem (Quotient.mk' (s := equivalence_of_images f₁ (by apply (embedding_iff f₂).1 at hf₂; exact hf₂.2))) h₆
+      · sorry
     · sorry
   · sorry
 }

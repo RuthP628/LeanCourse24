@@ -14,7 +14,7 @@ The file 'Sample.lean' contains the main finished results of the formalization p
   Note that there are two different descriptions of the adjunction space often found in the literature: one assumes that A (the subspace along which we glue one space to the other one) is a subset of X, the other assumes that A is a subspace of Y. In the project, it is assumed that A is a subspace of Y (or rather, that A and Y are distinct spaces and there is an embedding from A to Y).
   The two canonical maps into the adjunction space are called pushout_map_left and pushout_map_right in the formalization project.
   * Proofs of the universal properties of the disjoint union (univ_prop_coprod), the quotient space (univ_prop_quotSpace) and the adjunction space (univ_prop_adjunctionSpace).
-  * A proof that the left canonical map into the pushout is an embedding (pushout_map_left_embd), using that it is both injective and inducing.
+  * A proof that the left canonical map into the pushout is an embedding (pushout_map_left_embd), using that it is both injective and inducing. (the proof that it is inducing is unfortunately still unfinished)
   * A proof that if A is closed in Y, the left canonical map into the pushout is a closed embedding
   (pushout_map_left_closedEmbd_if_subspace_closed)
   * A proof that if A is closed in Y, the the right canonical map into the pushout restricted to Y \setminus f2(A)
