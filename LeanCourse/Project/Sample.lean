@@ -571,7 +571,31 @@ Inducing (pushout_map_left f₁ hf₂) := by {
     unfold Filter.comap
     simp
     by_cases h₁ : x ∈ image f₁ univ
-    ·
+    · simp at h₁
+      obtain ⟨ y, hy ⟩ := h₁
+      have h₂ : Inducing f₂ := by exact hf₂.toInducing
+      apply inducing_iff_nhds.1 at h₂
+      specialize h₂ y
+      have h₃ : IsOpen (preimage f₁ V) := by {
+        have h₄ : Continuous f₁ := by exact ContinuousMap.continuous f₁
+        exact h₄.isOpen_preimage V hV₂
+      }
+      have h₄ : (preimage f₁ V) ∈ nhds y := by {
+        rw [mem_nhds_iff]
+        use (preimage f₁ V)
+        constructor
+        · exact fun ⦃a⦄ a ↦ a
+        · constructor
+          · exact h₃
+          · simp
+            rw [hy]
+            exact hV₃
+      }
+      rw [h₂] at h₄
+      unfold Filter.comap at h₄
+      simp at h₄
+      obtain ⟨ V', hV'₁, hV'₂ ⟩ := h₄
+
       sorry
     · sorry
   · sorry
