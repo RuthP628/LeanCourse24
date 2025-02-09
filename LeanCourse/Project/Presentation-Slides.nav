@@ -4,26 +4,51 @@
 \headcommand {\beamer@framepages {2}{2}}
 \headcommand {\beamer@sectionpages {1}{2}}
 \headcommand {\beamer@subsectionpages {1}{2}}
-\headcommand {\sectionentry {1}{Problem statement}{3}{Problem statement}{0}}
+\headcommand {\sectionentry {1}{Mathematical background}{3}{Mathematical background}{0}}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{3}{Definition of the adjunction space}}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{3}{Universal properties}}
+\headcommand {\beamer@subsectionpages {3}{2}}
+\headcommand {\beamer@subsectionentry {0}{1}{3}{3}{Interesting lemmas}}
 \headcommand {\beamer@sectionpages {3}{2}}
 \headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\sectionentry {2}{Existing results}{3}{Existing results}{0}}
+\headcommand {\sectionentry {2}{Formalization}{3}{Formalization}{0}}
 \headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\beamer@subsectionentry {0}{2}{1}{3}{Method 1}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{3}{Implementing the definition}}
 \headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\beamer@subsectionentry {0}{2}{2}{3}{Method 2}}
-\headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\beamer@subsectionentry {0}{2}{3}{3}{Method 3}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{3}{Challenging aspects}}
 \headcommand {\beamer@sectionpages {3}{2}}
 \headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\sectionentry {3}{Comparative study}{3}{Comparative study}{0}}
-\headcommand {\beamer@sectionpages {3}{2}}
-\headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\sectionentry {4}{References}{3}{References}{0}}
-\headcommand {\slideentry {4}{0}{1}{3/3}{}{0}}
+\headcommand {\sectionentry {3}{Future work?}{3}{Future work?}{0}}
+\headcommand {\slideentry {3}{0}{1}{3/3}{}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\beamer@partpages {1}{3}}
-\headcommand {\beamer@subsectionpages {3}{3}}
-\headcommand {\beamer@sectionpages {3}{3}}
-\headcommand {\beamer@documentpages {3}}
-\headcommand {\gdef \inserttotalframenumber {3}}
+\headcommand {\slideentry {3}{0}{2}{4/4}{}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {3}{0}{3}{5/5}{}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\slideentry {3}{0}{4}{6/6}{}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {3}{0}{5}{7/7}{}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {3}{0}{6}{8/11}{}{0}}
+\headcommand {\beamer@framepages {8}{11}}
+\headcommand {\slideentry {3}{0}{7}{12/15}{}{0}}
+\headcommand {\beamer@framepages {12}{15}}
+\headcommand {\slideentry {3}{0}{8}{16/17}{}{0}}
+\headcommand {\beamer@framepages {16}{17}}
+\headcommand {\slideentry {3}{0}{9}{18/20}{}{0}}
+\headcommand {\beamer@framepages {18}{20}}
+\headcommand {\slideentry {3}{0}{10}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\slideentry {3}{0}{11}{22/22}{}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {3}{0}{12}{23/23}{}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {3}{0}{13}{24/24}{}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@partpages {1}{24}}
+\headcommand {\beamer@subsectionpages {3}{24}}
+\headcommand {\beamer@sectionpages {3}{24}}
+\headcommand {\beamer@documentpages {24}}
+\headcommand {\gdef \inserttotalframenumber {15}}

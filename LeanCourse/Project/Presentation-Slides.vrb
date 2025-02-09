@@ -1,0 +1,14 @@
+\frametitle{Mathematical background}
+		\framesubtitle{Universal properties}
+		\begin{theorem}[Universal property of the pushout]
+			Let $X, Y, Z$ be topological spaces, $A$ a subspace of $Y$, $f_1 : A \to X$ be continuous and $f_2 : A \to Y$ be the inclusion map.\\
+			Moreover, let $g_1 : X \to Z$ and $g_2 : Y \to Z$ be continuous maps with $g_1 \circ f_1 = g_2 \circ f_2$. \\
+			Then there exists exactly one continuous map $h : X \cup_{f_1} Y \to Z$ with $g_1 = h \circ \varphi_1$ and $g_2 = h \circ \varphi_2$.
+		\end{theorem}
+	\begin{tikzcd}
+		A \arrow[d,"f_1"'] \arrow[r,hook,"f_2"] &
+		Y \arrow[d,"\varphi_2"'] \arrow[ddr,bend left,"g_2"] \\
+		X \arrow[r,"\varphi_1"] \arrow[drr,bend right,"g_1"'] &
+		X \cup_{f_1} Y \arrow[dr,dashed,"h"] \\
+		&& Y
+	\end{tikzcd}
