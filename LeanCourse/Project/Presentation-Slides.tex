@@ -33,6 +33,7 @@
 			Let $X$ and $Y$ be topological spaces, $X \sqcup Y$ be the disjoint union and $\varphi_1 : X \to X \sqcup Y$ and $\varphi_2 : Y \to X \sqcup Y$ be the canonical inclusion maps. The topology $\mathcal{O}$ on $X \sqcup Y$ is given by
 			$$ \mathcal{O} := \{ U \subseteq X \sqcup Y \, \vert \, \varphi_1^{-1}(U) \text{ is open in } X \text{ or } \varphi_2^{-1}(U) \text{ is open in }Y \}. $$
 		\end{definition}
+		\pause[2]
 		\begin{definition}
 			Let $X$ be a topological space and $\sim$ be an equivalence relation on $X$. Then, the \textbf{quotient space} $X /_{\sim}$ is the set $\{[x] : x \in X\}$ of equivalence classes together with the topology 
 			$$\mathcal{O} := \{U \subseteq X /_{\sim} \, \vert \, \exists V \subseteq X \text{ open} : x \in V \Leftrightarrow [x] \in U\}.$$
@@ -183,8 +184,35 @@
 		\framesubtitle{Implementing the definition}
 		Steps when implementing the definition of AdjunctionSpace:
 		\begin{enumerate}
-			\item Defining the equivalence relation on the disjoint union (equivalence\_of\_images $f_1$ $hf_2$)
-			\item Defining $A$ and $Y$ as seperate types and defining the subspace relation by requiring $f_2$ to be an embedding.
+			\item<2-5> Defining the equivalence relation on the disjoint union (equivalence\_of\_images $f_1$ $hf_2$)
+			\item<3-5> Defining $A$ and $Y$ as seperate types and defining the subspace relation by requiring $f_2$ to be an embedding.
+			\item<4-5> Defining AdjunctionSpace $f_1$ $hf_2$ as the quotient of the disjoint union with respect to equivalence\_of\_images.
+			\item<5> The topology on AdjunctionSpace $f_1$ $hf_2$ is now naturally given since the topology on the disjoint union and the quotient topology are already defined.
 		\end{enumerate}
+	\end{frame}
+	\begin{frame}
+		\frametitle{Formalization}
+		\framesubtitle{Universal properties}
+		The universal properties of the disjoint union and the quotient space seem to be not implemented in Lean yet, so I proved them from scratch. \pause[2]
+		\\The universal property of the pushout is an easy consequence of them (purely categorical diagram chasing proof).
+	\end{frame}
+	\begin{frame}
+		\frametitle{Formalization}
+		\framesubtitle{Challenging aspects}
+		\begin{itemize}
+			\item<1-5> Proving that $\varphi_1$ is an embedding.
+			\item<2-5> Missing framework when trying to prove connectedness
+			\item<3-5> Difficulties with coercions when trying to prove path-connectedness.
+			\item<4-5> Difficulties when trying to use the Tietze extension theorem.
+			\item<5> The script I was working with turned out contain some errors, so I discovered some missing prerequisites in some theorems in the working process.
+		\end{itemize}
+	\end{frame}
+	\begin{frame}
+		\frametitle{What could one do in the future?}
+		\begin{itemize}
+			\item<1-3> Implement the wedge product as a special case.
+			\item<2-3> Implement some examples (e.g. projective spaces, cylinder, Klein bottle) as instances of AdjunctionSpace.
+			\item<3> There is already a good category theory framework in Lean, in particular, the categorical pushout is already implemented (CategoryTheory.IsPushout). Maybe my work could somehow be connected with the category theory framework?
+		\end{itemize}
 	\end{frame}
 \end{document}
